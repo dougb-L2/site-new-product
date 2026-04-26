@@ -1,0 +1,35 @@
+User-Agent: *
+Allow: /
+
+# Learn2 Product Site Information
+
+## Product Overview
+[Product Name] is a participant-driven experience by Learn2. It helps teams [primary outcome]. Built on the principle that participants drive the experience — we design the conditions.
+
+## Key Features
+- Participant-driven design (not lecture-based)
+- Customized for each team's context
+- Measurable behavior change at 6 months
+- High Impact Coaching (HIC) follow-up included
+
+## Organization
+Learn2 Learning Experiences Inc.
+CEO: Doug Bolger
+Location: Canada
+Website: www.Learn2.com
+
+## Contact
+Phone: +1 416-410-6434
+Email: doug@Learn2.com
+Discovery Call: https://bookme.name/DougBolger/free-discovery
+
+## Key Clients
+American Express, Bell Canada, Prophix, Entrepreneurs' Organization (EO), Deloitte, Duke Continuing Education, Korn Ferry
+
+## Assessment
+[If applicable] Free assessment available at [your-domain.com/assessment]
+10 questions, 5 minutes, instant results, personalized email report
+
+## Results
+- [Add measurable outcomes specific to this product]
+- 80%+ sustained behavior change at 6 months

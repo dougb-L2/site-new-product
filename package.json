@@ -1,0 +1,32 @@
+{
+  "name": "learn2-product-site",
+  "version": "1.0.0",
+  "description": "Learn2 product site template — standalone, Vercel-ready",
+  "scripts": {
+    "dev": "next dev",
+    "prebuild": "node scripts/perf-audit.mjs . && node scripts/content-audit.mjs .",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "3.0.64",
+    "@ai-sdk/react": "3.0.143",
+    "ai": "6.0.141",
+    "next": "^16.2.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "resend": "^6.10.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20.12.12",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^4.0.1",
+    "typescript": "^5.4.5"
+  }
+}
