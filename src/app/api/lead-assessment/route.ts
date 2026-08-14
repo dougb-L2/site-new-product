@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { sendTracked } from "@/lib/sendgrid";
 import {
   APPROACHES,
   TEAM_MIRROR,
@@ -13,7 +13,8 @@ const PB_EMAIL = process.env.POCKETBASE_EMAIL || "";
 const PB_PASSWORD = process.env.POCKETBASE_PASSWORD || "";
 
 const SITE_NAME = "Naturally by Learn2";
-const EMAIL_FROM = `${SITE_NAME} <noreply@notify.learn2.com>`;
+// Verified SendGrid senders only — learn2@ and assessment@learn2.com.
+const EMAIL_FROM = `${SITE_NAME} <assessment@learn2.com>`;
 const EMAIL_BCC = "sales@Learn2.com";
 
 async function getPBToken(): Promise<string> {
@@ -217,11 +218,10 @@ async function sendResultsEmail(payload: {
   combinationTitle: string;
   adaptabilityScore: number;
 }): Promise<boolean> {
-  if (!process.env.RESEND_API_KEY) {
-    console.error("[lead-assessment] RESEND_API_KEY is not set");
+  if (!process.env.SENDGRID_API_KEY) {
+    console.error("[lead-assessment] SENDGRID_API_KEY is not set");
     return false;
   }
-  const resend = new Resend(process.env.RESEND_API_KEY);
   const html = buildEmailHtml({
     name: payload.name,
     primary: payload.primaryApproach,
@@ -232,15 +232,17 @@ async function sendResultsEmail(payload: {
   });
   const primaryName = APPROACHES[payload.primaryApproach].name;
 
-  const { error } = await resend.emails.send({
-    from: EMAIL_FROM,
+  const { ok } = await sendTracked({
     to: payload.email,
+    from: EMAIL_FROM,
     bcc: EMAIL_BCC,
+    kind: "MQL",
+    campaign: "lead-assessment",
     subject: `${payload.name}, you lead as a ${primaryName} — here is what your team needs`,
     html,
   });
-  if (error) {
-    console.error("[lead-assessment] Resend error:", JSON.stringify(error));
+  if (!ok) {
+    console.error("[lead-assessment] SendGrid send failed");
     return false;
   }
   return true;

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
+import { sendTracked } from "@/lib/sendgrid";
 import { APPROACHES, type Color } from "@/lib/learn-assessment-data";
 
 export const runtime = "nodejs";
@@ -9,7 +9,8 @@ const PB_EMAIL = process.env.POCKETBASE_EMAIL || "";
 const PB_PASSWORD = process.env.POCKETBASE_PASSWORD || "";
 
 const SITE_NAME = "Naturally by Learn2";
-const EMAIL_FROM = `${SITE_NAME} <noreply@notify.learn2.com>`;
+// Verified SendGrid senders only — learn2@ and assessment@learn2.com.
+const EMAIL_FROM = `${SITE_NAME} <assessment@learn2.com>`;
 const EMAIL_BCC = "sales@Learn2.com";
 
 async function getPBToken(): Promise<string> {
@@ -197,12 +198,11 @@ async function sendResultsEmail(payload: {
   adaptabilityScore: number;
   rankings: RankedForEmail[];
 }): Promise<boolean> {
-  if (!process.env.RESEND_API_KEY) {
-    console.error("[learn-assessment] RESEND_API_KEY is not set");
+  if (!process.env.SENDGRID_API_KEY) {
+    console.error("[learn-assessment] SENDGRID_API_KEY is not set");
     return false;
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
   const html = buildEmailHtml({
     name: payload.name,
     primary: payload.primaryApproach,
@@ -214,16 +214,18 @@ async function sendResultsEmail(payload: {
   });
   const primaryName = APPROACHES[payload.primaryApproach].name;
 
-  const { error } = await resend.emails.send({
-    from: EMAIL_FROM,
+  const { ok } = await sendTracked({
     to: payload.email,
+    from: EMAIL_FROM,
     bcc: EMAIL_BCC,
+    kind: "MQL",
+    campaign: "learn-assessment",
     subject: `${payload.name}, your natural learning approach is ${primaryName}`,
     html,
   });
 
-  if (error) {
-    console.error("[learn-assessment] Resend error:", JSON.stringify(error));
+  if (!ok) {
+    console.error("[learn-assessment] SendGrid send failed");
     return false;
   }
   return true;
