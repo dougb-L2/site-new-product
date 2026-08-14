@@ -1,4 +1,4 @@
-import { streamText, tool, convertToModelMessages } from "ai";
+import { streamText, tool, convertToModelMessages, stepCountIs } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
 import { z } from "zod";
 import { CHAT_SYSTEM_PROMPT, CHAT_CONFIG } from "@/lib/chat-config";
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
         capture_lead: tool({
           description:
             "Capture lead information when visitor shares contact details. Call when you have at least an email address.",
-          parameters: z.object({
+          inputSchema: z.object({
             name: z.string().optional().describe("Visitor's name"),
             email: z.string().optional().describe("Visitor's email"),
             company: z.string().optional().describe("Visitor's company"),
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
         suggest_booking: tool({
           description:
             "Suggest a booking link when conversation reaches a conversion point. Use 'walkthrough' for product-specific demo, 'discovery' for multi-program conversation with founder.",
-          parameters: z.object({
+          inputSchema: z.object({
             booking_type: z
               .enum(["discovery", "walkthrough"])
               .describe("Type of booking to suggest"),
@@ -83,7 +83,7 @@ export async function POST(req: Request) {
           },
         }),
       },
-      maxSteps: 3,
+      stopWhen: stepCountIs(3),
     });
 
     return result.toUIMessageStreamResponse();

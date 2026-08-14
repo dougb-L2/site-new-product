@@ -18,6 +18,13 @@ export const metadata = {
   },
 };
 
+// BlogGrid shows a post count on each filter button. Derive it from the posts
+// so the numbers stay right as a new site fills in its own content.
+const hubsWithCounts = hubs.map((hub) => ({
+  ...hub,
+  count: blogPosts.filter((post) => post.hub === hub.name).length,
+}));
+
 export default function BlogPage() {
   return (
     <>
@@ -36,7 +43,7 @@ export default function BlogPage() {
         </div>
       </section>
 
-      <BlogGrid posts={blogPosts} hubs={hubs} />
+      <BlogGrid posts={blogPosts} hubs={hubsWithCounts} />
 
       {/* Newsletter CTA */}
       <section className="py-16 md:py-24 bg-learn2-light">

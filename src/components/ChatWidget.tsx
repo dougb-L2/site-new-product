@@ -1,6 +1,7 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
+import type { UIMessage } from "ai";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { CHAT_CONFIG } from "@/lib/chat-config";
 
@@ -32,25 +33,30 @@ interface ChatMessage {
   parts: MessagePart[];
 }
 
-export default function ChatWidget() {
-  const [isOpen, setIsOpen] = useState(false);
+// Typed as UIMessage[] so the chat's message type stays the full union. An
+// untyped literal narrows `role` to "assistant" and every `role === "user"`
+// check below becomes a compile error.
+const WELCOME_MESSAGES: UIMessage[] = [
+  {
+    id: "welcome",
+    role: "assistant",
+    parts: [
+      {
+        type: "text",
+        text: CHAT_CONFIG.welcomeMessage,
+      },
+    ],
+  },
+];
+
+export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { messages, sendMessage, status, error } = useChat({
-    messages: [
-      {
-        id: "welcome",
-        role: "assistant",
-        parts: [
-          {
-            type: "text" as const,
-            text: CHAT_CONFIG.welcomeMessage,
-          },
-        ],
-      },
-    ],
+    messages: WELCOME_MESSAGES,
     onError: (err) => {
       console.error("[ChatWidget] Error:", err);
     },
