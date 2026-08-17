@@ -1,42 +1,14 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import type { UIMessage } from "ai";
+import type { ChatUIMessage } from "@/app/api/chat/route";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { CHAT_CONFIG } from "@/lib/chat-config";
 
-interface ToolInvocationPart {
-  type: "tool-invocation";
-  toolInvocation: {
-    toolName: string;
-    state: string;
-    result?: {
-      link?: string;
-      label?: string;
-      context?: string;
-      success?: boolean;
-      message?: string;
-    };
-  };
-}
-
-interface TextPart {
-  type: "text";
-  text: string;
-}
-
-type MessagePart = TextPart | ToolInvocationPart;
-
-interface ChatMessage {
-  id: string;
-  role: "user" | "assistant";
-  parts: MessagePart[];
-}
-
-// Typed as UIMessage[] so the chat's message type stays the full union. An
+// Typed as ChatUIMessage[] so the chat's message type stays the full union. An
 // untyped literal narrows `role` to "assistant" and every `role === "user"`
 // check below becomes a compile error.
-const WELCOME_MESSAGES: UIMessage[] = [
+const WELCOME_MESSAGES: ChatUIMessage[] = [
   {
     id: "welcome",
     role: "assistant",
@@ -55,7 +27,7 @@ export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: bool
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { messages, sendMessage, status, error } = useChat({
+  const { messages, sendMessage, status, error } = useChat<ChatUIMessage>({
     messages: WELCOME_MESSAGES,
     onError: (err) => {
       console.error("[ChatWidget] Error:", err);
@@ -102,7 +74,7 @@ export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: bool
     [isLoading, sendMessage]
   );
 
-  function renderMessageContent(msg: ChatMessage) {
+  function renderMessageContent(msg: ChatUIMessage) {
     if (!msg.parts || msg.parts.length === 0) return null;
 
     return msg.parts.map((part, i) => {
@@ -114,44 +86,36 @@ export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: bool
         );
       }
 
-      if (part.type === "tool-invocation") {
-        const inv = (part as ToolInvocationPart).toolInvocation;
-
-        // Render booking button
-        if (inv.toolName === "suggest_booking" && inv.state === "result" && inv.result) {
-          return (
-            <a
-              key={i}
-              href={inv.result.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                marginTop: "8px",
-                padding: "10px 16px",
-                borderRadius: "8px",
-                fontWeight: 700,
-                fontSize: "14px",
-                color: "#1a1a2e",
-                backgroundColor: "#F48B00",
-                textDecoration: "none",
-                textAlign: "center",
-                transition: "opacity 0.2s",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
-              onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
-            >
-              {inv.result.label} →
-            </a>
-          );
-        }
-
-        // Hide capture_lead tool results — background operation
-        if (inv.toolName === "capture_lead") {
-          return null;
-        }
-
-        return null;
+      // Booking button. The part type is `tool-<toolName>` and the output only
+      // exists once the tool has run — anything earlier has no link to render.
+      // capture_lead is a background operation, so it deliberately renders
+      // nothing and falls through.
+      if (part.type === "tool-suggest_booking" && part.state === "output-available") {
+        return (
+          <a
+            key={i}
+            href={part.output.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              display: "inline-block",
+              marginTop: "8px",
+              padding: "10px 16px",
+              borderRadius: "8px",
+              fontWeight: 700,
+              fontSize: "14px",
+              color: "#1a1a2e",
+              backgroundColor: "#F48B00",
+              textDecoration: "none",
+              textAlign: "center",
+              transition: "opacity 0.2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
+          >
+            {part.output.label} →
+          </a>
+        );
       }
 
       return null;
@@ -291,7 +255,7 @@ export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: bool
                     flexDirection: "column",
                   }}
                 >
-                  {renderMessageContent(msg as ChatMessage)}
+                  {renderMessageContent(msg)}
                 </div>
               </div>
             ))}
