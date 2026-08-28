@@ -5,21 +5,25 @@ import type { ChatUIMessage } from "@/app/api/chat/route";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { CHAT_CONFIG } from "@/lib/chat-config";
 
-// Typed as ChatUIMessage[] so the chat's message type stays the full union. An
-// untyped literal narrows `role` to "assistant" and every `role === "user"`
-// check below becomes a compile error.
-const WELCOME_MESSAGES: ChatUIMessage[] = [
-  {
-    id: "welcome",
-    role: "assistant",
-    parts: [
-      {
-        type: "text",
-        text: CHAT_CONFIG.welcomeMessage,
-      },
-    ],
-  },
-];
+// Returned fresh per mount, not shared. The chat state stores this array by
+// reference (only its setter copies), so a module-level constant would be
+// live state shared across mounts. Typed as ChatUIMessage[] so the message
+// type stays the full union — an untyped literal narrows `role` to
+// "assistant" and every `role === "user"` check below becomes a compile error.
+function createWelcomeMessages(): ChatUIMessage[] {
+  return [
+    {
+      id: "welcome",
+      role: "assistant",
+      parts: [
+        {
+          type: "text",
+          text: CHAT_CONFIG.welcomeMessage,
+        },
+      ],
+    },
+  ];
+}
 
 export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: boolean }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
@@ -27,8 +31,12 @@ export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: bool
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // useState initialiser runs once per mount, matching the per-mount literal
+  // this replaced.
+  const [welcomeMessages] = useState<ChatUIMessage[]>(createWelcomeMessages);
+
   const { messages, sendMessage, status, error } = useChat<ChatUIMessage>({
-    messages: WELCOME_MESSAGES,
+    messages: welcomeMessages,
     onError: (err) => {
       console.error("[ChatWidget] Error:", err);
     },
