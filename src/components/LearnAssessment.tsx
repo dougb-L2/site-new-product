@@ -568,7 +568,7 @@ export default function LearnAssessment() {
                 {emailStatus === "sent"
                   ? "Check your inbox in a minute for a deeper breakdown of your natural learning approach and what to do with it."
                   : emailStatus === "failed"
-                  ? "Your results are here on screen. If you would like the full breakdown emailed, reach out and we will resend."
+                  ? "Your results are here on screen. If you would like the full breakdown emailed, reach out and we will send it again."
                   : "Your full breakdown, your blind spot, and what kind of learning is worth your time."}
               </p>
             </div>

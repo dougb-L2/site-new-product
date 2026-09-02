@@ -561,7 +561,7 @@ export default function LeadAssessment() {
                 {emailStatus === "sent"
                   ? "Your leadership approach, the mirror, and one concrete practice move are in your inbox."
                   : emailStatus === "failed"
-                  ? "Your results are on screen. If you want them emailed, reach out and we will resend."
+                  ? "Your results are on screen. If you want them emailed, reach out and we will send them again."
                   : "Your leadership approach, the mirror, and one concrete practice move."}
               </p>
             </div>

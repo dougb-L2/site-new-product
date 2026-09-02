@@ -1,4 +1,4 @@
-import { Resend } from "resend";
+import { sendTracked } from "@/lib/sendgrid";
 
 export const runtime = "nodejs";
 
@@ -17,12 +17,10 @@ export async function POST(req: Request) {
       site,
     } = body;
 
-    if (!process.env.RESEND_API_KEY) {
-      console.error("[chat-capture] RESEND_API_KEY not set");
+    if (!process.env.SENDGRID_API_KEY) {
+      console.error("[chat-capture] SENDGRID_API_KEY not set");
       return Response.json({ error: "Not configured" }, { status: 503 });
     }
-
-    const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Build qualification tags for subject line
     const tags: string[] = [];
@@ -34,10 +32,12 @@ export async function POST(req: Request) {
     const tagString = tags.length > 0 ? ` — ${tags.join(", ")}` : "";
     const siteLabel = site || "Learn2 Site";
 
-    const { error } = await resend.emails.send({
-      from: `Learn2 Site <noreply@notify.learn2.com>`,
+    // Internal SQL notice to sales@ via SendGrid — bind by recipient (sales@).
+    const { ok } = await sendTracked({
       to: "sales@Learn2.com",
       replyTo: email || undefined,
+      kind: "SQL",
+      campaign: "chat-capture",
       subject: `${siteLabel} Lead${tagString}${name ? ` from ${name}` : ""}`,
       text: [
         `New chat lead from Learn2 Site`,
@@ -60,8 +60,8 @@ export async function POST(req: Request) {
       ].join("\n"),
     });
 
-    if (error) {
-      console.error("[chat-capture] Resend error:", JSON.stringify(error));
+    if (!ok) {
+      console.error("[chat-capture] SendGrid send failed");
       return Response.json({ error: "Failed to send" }, { status: 500 });
     }
 

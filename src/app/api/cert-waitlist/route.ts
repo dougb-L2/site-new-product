@@ -1,4 +1,4 @@
-import { Resend } from "resend";
+import { sendTracked } from "@/lib/sendgrid";
 import { SITE_NAME, SITE_URL } from "@/lib/site-config";
 
 export const runtime = "nodejs";
@@ -44,15 +44,13 @@ export async function POST(req: Request) {
       return Response.json({ error: "Please select a role." }, { status: 400 });
     }
 
-    if (!process.env.RESEND_API_KEY) {
-      console.error("[cert-waitlist] RESEND_API_KEY is not set");
+    if (!process.env.SENDGRID_API_KEY) {
+      console.error("[cert-waitlist] SENDGRID_API_KEY is not set");
       return Response.json(
         { error: "Waitlist form is not configured. Please email sales@Learn2.com directly." },
         { status: 503 }
       );
     }
-
-    const resend = new Resend(process.env.RESEND_API_KEY);
 
     const cleanName = name.trim();
     const cleanEmail = email.trim().toLowerCase();
@@ -60,10 +58,13 @@ export async function POST(req: Request) {
     const cleanContext = (context || "").trim();
     const source = pageUrl || SITE_URL + "/certification";
 
-    const { data, error } = await resend.emails.send({
-      from: `${SITE_NAME} <noreply@notify.learn2.com>`,
+    // Internal SQL notice to sales@ via SendGrid — bind by recipient (sales@).
+    const { ok, messageId } = await sendTracked({
       to: "sales@Learn2.com",
       replyTo: cleanEmail,
+      kind: "SQL",
+      campaign: "cert-waitlist",
+      sourcePage: pageUrl || source,
       subject: `[Cohort Waitlist] ${cleanName} — ${cleanRole}`,
       text: [
         `New Cohort Certification Waitlist signup from ${SITE_NAME}`,
@@ -83,8 +84,8 @@ export async function POST(req: Request) {
       ].join("\n"),
     });
 
-    if (error) {
-      console.error("[cert-waitlist] Resend error:", JSON.stringify(error));
+    if (!ok) {
+      console.error("[cert-waitlist] SendGrid send failed");
       return Response.json(
         { error: "Failed to join the waitlist. Please email sales@Learn2.com directly." },
         { status: 500 }
@@ -92,7 +93,7 @@ export async function POST(req: Request) {
     }
 
     console.log("[cert-waitlist] Signup:", JSON.stringify({
-      id: data?.id,
+      id: messageId,
       site: SITE_NAME,
       from: cleanEmail,
       name: cleanName,

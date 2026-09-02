@@ -30,12 +30,20 @@ The AI chat widget loads its system prompt, button text, booking links, and quic
 
 Toggle the three assessments (Communicate, Lead, Learn) on/off per site. Each has its own data file in `src/lib/`.
 
+### Email: `src/lib/sendgrid.ts`
+
+SendGrid is the only email provider. Never add Resend or any other ESP.
+
+Every transactional send goes through this file. Use `sendTracked()` for anything a lead reads — it turns on open and click tracking and stamps `custom_args` (`kind`, `email`, `campaign`, `source_page`, `sequence_position`, `lead_id`) so the resulting opens and clicks join back to the MQL or SQL that produced them. Use `sendInternal()` for ops alerts, which carry no lead binding and no tracking. Neither one throws — they return a result so a route keeps its no-silent-failure contract.
+
+Send only from a verified sender: `learn2@learn2.com` or `assessment@learn2.com`. The old `notify.learn2.com` subdomain was removed and will bounce.
+
 ## Tech Stack
 
 - Next.js 16, React 19, TypeScript
 - Tailwind CSS 4
 - Vercel AI SDK with Claude Haiku (chat widget)
-- Resend (email/lead capture)
+- SendGrid (email/lead capture) — the only email provider, never Resend
 - Vercel hosting
 
 ## SEO Guardrails
@@ -43,8 +51,9 @@ Toggle the three assessments (Communicate, Lead, Learn) on/off per site. Each ha
 Prebuild scripts enforce quality on every build:
 - `scripts/perf-audit.mjs` — 6 performance rules (preconnect, next/image, cache TTL, etc.)
 - `scripts/content-audit.mjs` — 6 content quality rules (no Word paste, no tracking URLs, no doubled brand, etc.)
+- `scripts/esp-audit.mjs` — 5 email rules (no retired ESP import, env var, or package; no dead `notify.learn2.com` sender; every send routed through `src/lib/sendgrid.ts`). It proves each rule fires on a sabotage fixture before it scans, so a passing run means the gate still bites. Run it alone with `node scripts/esp-audit.mjs .`
 
-Both run automatically via `npm run prebuild` before every `npm run build`.
+All three run automatically via `npm run prebuild` before every `npm run build`.
 
 ### SEO Rules
 
@@ -61,7 +70,8 @@ Both run automatically via `npm run prebuild` before every `npm run build`.
 | `NEXT_PUBLIC_SITE_URL` | Yes | Domain for canonicals, OG, sitemap |
 | `NEXT_PUBLIC_SITE_NAME` | Yes | Site name in metadata |
 | `ANTHROPIC_API_KEY` | Yes | Chat widget AI |
-| `RESEND_API_KEY` | Yes | Contact form, lead capture |
+| `SENDGRID_API_KEY` | Yes | Contact form, lead capture |
+| `SENDGRID_FROM` | Optional | Overrides the default From (verified senders only) |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Recommended | Google Analytics |
 | `NEXT_PUBLIC_GTM_ID` | Recommended | Google Tag Manager |
 | `NEXT_PUBLIC_GSC_VERIFICATION` | Recommended | Search Console verification |
