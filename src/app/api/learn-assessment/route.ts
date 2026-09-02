@@ -58,7 +58,7 @@ async function createClient(
       email,
       status: "prospect",
       source: source === "linkedin" ? "linkedin" : "website",
-      notes: "Created via Learn Naturally Assessment",
+      notes: "Created via Learning Assessment",
     }),
   });
   if (!res.ok) {
@@ -183,7 +183,7 @@ function buildEmailHtml(params: {
       <a href="https://learn2.com/contact" style="display:inline-block;background:#F16A24;color:#ffffff;text-decoration:none;padding:12px 28px;border-radius:8px;font-weight:600;">Book a discovery call</a>
     </p>
 
-    <p style="font-size:12px;color:#9ca3af;margin:32px 0 0;line-height:1.5;">You are receiving this because you took the Learn Naturally assessment. Questions? Reply to this email.</p>
+    <p style="font-size:12px;color:#9ca3af;margin:32px 0 0;line-height:1.5;">You are receiving this because you took the learning assessment. Questions? Reply to this email.</p>
   </div>
 </body>
 </html>`;

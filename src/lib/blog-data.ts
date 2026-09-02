@@ -53,7 +53,7 @@ Include proof points, examples, and a clear call to action.
 
 ## Next step
 
-The free **Naturally assessment** takes ten minutes. Your report shows:
+The free **assessment** takes ten minutes. Your report shows:
 
 - Your primary and secondary Natural Approach
 - The specific friction patterns your combination creates at work

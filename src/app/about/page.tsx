@@ -150,7 +150,7 @@ export default function AboutPage() {
       {/* CTA Section */}
       <section className="bg-learn2-orange text-white py-20 md:py-28">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl mb-6">Ready to Help Your Team Work Naturally?</h2>
+          <h2 className="text-2xl md:text-3xl mb-6">Ready to Help Your Team Work Better Together?</h2>
           <p className="text-lg mb-8 opacity-95">
             Take the free assessment. See your natural approach. Then let's talk about how we could help your organization.
           </p>

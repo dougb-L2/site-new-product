@@ -1,12 +1,12 @@
 import Link from 'next/link';
-import { canonicalFor } from "@/lib/site-config";
+import { canonicalFor, SITE_NAME } from "@/lib/site-config";
 import CohortWaitlistForm from '@/components/CohortWaitlistForm';
 
 export const metadata = {
   alternates: { canonical: canonicalFor("/certification") },
   openGraph: { url: canonicalFor("/certification") },
-  title: 'Naturally Facilitator Certification - Train Your Team',
-  description: 'Deliver Naturally for your organization. Certification for 2 internal facilitators.',
+  title: `${SITE_NAME} Facilitator Certification - Build Capability In-House`,
+  description: `Deliver ${SITE_NAME} inside your organization. Certification for two internal facilitators.`,
 };
 
 export default function CertificationPage() {
@@ -17,10 +17,10 @@ export default function CertificationPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-learn2-orange mb-4">Certification</p>
           <h1 className="text-3xl md:text-4xl lg:text-5xl mb-6 text-learn2-text">
-            Deliver Naturally for Your Organization
+            Deliver {SITE_NAME} for Your Organization
           </h1>
           <p className="text-xl text-learn2-gray mb-8 leading-relaxed">
-            Train your own facilitators. Deliver Naturally to your teams. Build capability inside your organization.
+            Certify your own facilitators. Deliver {SITE_NAME} to your teams. Build capability inside your organization.
           </p>
           <Link
             href="/contact"
@@ -72,7 +72,7 @@ export default function CertificationPage() {
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-learn2-text">Sustained Culture</h3>
                 <p className="text-learn2-gray leading-relaxed">
-                  When Naturally becomes part of how you operate, it sticks. New team members learn the language early. It becomes how you work, not something that happened once.
+                  When {SITE_NAME} becomes part of how you operate, it sticks. New team members learn the language early. It becomes how you work, not something that happened once.
                 </p>
               </div>
             </div>
@@ -88,9 +88,9 @@ export default function CertificationPage() {
 
           <div className="space-y-8">
             <div className="bg-white rounded-lg p-8 border-l-4 border-learn2-orange">
-              <h3 className="text-xl mb-4 text-learn2-text">3 Naturally Programs</h3>
+              <h3 className="text-xl mb-4 text-learn2-text">3 Experiences</h3>
               <p className="text-learn2-gray mb-4 leading-relaxed">
-                Choose 3 of the 8 Naturally experiences. Most commonly: Communicate, Sell, and Lead. You can choose any combination based on your organizational priorities.
+                Choose 3 of the 8 {SITE_NAME} experiences. You could choose any combination based on your organizational priorities.
               </p>
               <ul className="space-y-2 text-learn2-gray">
                 <li className="flex gap-3">
@@ -115,7 +115,7 @@ export default function CertificationPage() {
             <div className="bg-white rounded-lg p-8 border-l-4 border-learn2-orange">
               <h3 className="text-xl mb-4 text-learn2-text">Certification for 2 Facilitators</h3>
               <p className="text-learn2-gray mb-4 leading-relaxed">
-                We certify two of your team members as Naturally facilitators. They learn the framework deeply. They practice facilitation. They become the keepers of Naturally for your organization.
+                We certify two of your team members as {SITE_NAME} facilitators. They learn the framework deeply. They practice facilitation. They become the keepers of {SITE_NAME} for your organization.
               </p>
               <ul className="space-y-2 text-learn2-gray">
                 <li className="flex gap-3">
@@ -259,7 +259,7 @@ export default function CertificationPage() {
             <div className="bg-white rounded-lg p-8 border-l-4 border-learn2-orange">
               <h3 className="text-xl font-semibold mb-2 text-learn2-text">Certified Facilitators</h3>
               <p className="text-learn2-gray leading-relaxed">
-                Two of your team members become experts in the Naturally framework and skilled facilitators. They understand the content deeply and can customize for your context.
+                Two of your team members become experts in the {SITE_NAME} framework and skilled facilitators. They understand the content deeply and can customize for your context.
               </p>
             </div>
 
@@ -273,7 +273,7 @@ export default function CertificationPage() {
             <div className="bg-white rounded-lg p-8 border-l-4 border-learn2-orange">
               <h3 className="text-xl font-semibold mb-2 text-learn2-text">Embedded Culture</h3>
               <p className="text-learn2-gray leading-relaxed">
-                Naturally becomes part of how you operate. The language sticks. New hires learn it early. It becomes a competitive advantage because your people understand how they work together.
+                {SITE_NAME} becomes part of how you operate. The language sticks. New hires learn it early. It becomes a competitive advantage because your people understand how they work together.
               </p>
             </div>
 
@@ -342,7 +342,7 @@ export default function CertificationPage() {
             </li>
             <li className="flex gap-3">
               <span className="text-learn2-orange font-bold">✓</span>
-              <span>Learn to facilitate Communicate / Sell / Lead Naturally.</span>
+              <span>Learn to facilitate the three experiences you choose.</span>
             </li>
             <li className="flex gap-3">
               <span className="text-learn2-orange font-bold">✓</span>
@@ -350,7 +350,7 @@ export default function CertificationPage() {
             </li>
             <li className="flex gap-3">
               <span className="text-learn2-orange font-bold">✓</span>
-              <span>Certified facilitators join the Naturally network and earn when they deliver.</span>
+              <span>Certified facilitators join the Learn2 facilitator network and earn when they deliver.</span>
             </li>
           </ul>
           <CohortWaitlistForm />
@@ -360,7 +360,7 @@ export default function CertificationPage() {
       {/* Final CTA Section — organizational path */}
       <section className="bg-learn2-orange text-white py-20 md:py-28">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl mb-6">Build Naturally Into Your Organization</h2>
+          <h2 className="text-2xl md:text-3xl mb-6">Build {SITE_NAME} Into Your Organization</h2>
           <p className="text-lg mb-8 opacity-95">
             For organizations certifying two internal facilitators and running multiple cohorts. Custom pricing, ongoing support, embedded culture.
           </p>

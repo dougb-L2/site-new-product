@@ -11,7 +11,7 @@ export const ASSESSMENT_CONFIG = {
     description: "A free 10-question diagnostic that reveals how you naturally communicate, sell, and lead.",
   },
 
-  /** Lead Naturally assessment — leadership mirror */
+  /** Leadership assessment — leadership mirror */
   lead: {
     enabled: true,
     path: "/lead-assessment",
@@ -19,7 +19,7 @@ export const ASSESSMENT_CONFIG = {
     description: "How do you naturally lead? This 10-question assessment reveals your leadership style.",
   },
 
-  /** Learn Naturally assessment — learning style */
+  /** Learning assessment — learning style */
   learn: {
     enabled: true,
     path: "/learn-assessment",

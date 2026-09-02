@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   // of the sitemap AND noindexed, so it is never indexable-but-orphaned.
   robots: ASSESSMENT_CONFIG.communicate.enabled ? undefined : { index: false, follow: true },
   alternates: { canonical: canonicalFor("/assessment") },
-  title: 'Free Naturally Assessment - Discover Your Natural Approach',
+  title: 'Free Assessment - Discover Your Natural Approach',
   description: 'Discover your natural approach to communication, sales, and leadership in 5 minutes. Free. No credit card.',
   openGraph: {
     url: canonicalFor("/assessment"),
