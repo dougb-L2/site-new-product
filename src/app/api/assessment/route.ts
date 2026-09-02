@@ -48,7 +48,7 @@ async function createClient(
       email,
       status: "prospect",
       source: source === "linkedin" ? "linkedin" : "website",
-      notes: "Created via Naturally Assessment",
+      notes: "Created via Communication Assessment",
     }),
   });
   if (!res.ok) {

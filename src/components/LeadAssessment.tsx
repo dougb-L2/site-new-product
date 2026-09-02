@@ -756,7 +756,7 @@ function ShareButton() {
   const handleShare = async () => {
     const url = `${window.location.origin}/lead-assessment`;
     const shareData = {
-      title: "Lead Naturally — Leadership Style Assessment",
+      title: "Leadership Style Assessment",
       text: "Find out how you lead — and what your team actually needs from you. Five minutes.",
       url,
     };

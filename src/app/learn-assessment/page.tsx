@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   // of the sitemap AND noindexed, so it is never indexable-but-orphaned.
   robots: ASSESSMENT_CONFIG.learn.enabled ? undefined : { index: false, follow: true },
   alternates: { canonical: canonicalFor("/learn-assessment") },
-  title: 'Free Learn Naturally Assessment - Discover How You Naturally Learn',
+  title: 'Free Learning Assessment - Discover How You Naturally Learn',
   description: 'Discover your natural approach to learning in 5 minutes. Free. No credit card.',
   openGraph: {
     url: canonicalFor("/learn-assessment"),
