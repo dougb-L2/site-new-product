@@ -128,7 +128,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     id: 3,
-    text: "The instructor I always remember is the one who:",
+    text: "The facilitator I always remember is the one who:",
     statements: [
       "walked me through it step by step and made sure I could do it before we moved on.",
       "laid out the whole territory first so I understood where each piece fit.",

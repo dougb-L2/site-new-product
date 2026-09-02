@@ -20,8 +20,10 @@ export const SITE_DESCRIPTION =
 
 // Set to true if your site uses trailing slashes. Verify with a real deploy.
 export const TRAILING_SLASH = false;
-// TODO: Add an OG image at public/images/og-default.jpg (1200x630px recommended)
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-default.jpg`;
+// The Open Graph image is generated from this config at build time by
+// src/app/opengraph-image.tsx, so it is always correct for the site and there is
+// no binary asset to remember to replace. Next emits og:image/twitter:image from
+// that file automatically — nothing to wire up here.
 export const SITEMAP_URL = `${SITE_URL}/sitemap.xml`;
 
 /**

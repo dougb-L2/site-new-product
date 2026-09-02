@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({ name: '', email: '', company: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', company: '', message: '' });
   const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
@@ -30,7 +30,7 @@ export default function ContactPage() {
         return;
       }
       setStatus('success');
-      setFormData({ name: '', email: '', company: '' });
+      setFormData({ name: '', email: '', company: '', message: '' });
     } catch {
       setErrorMsg('Network error. Please email sales@Learn2.com directly.');
       setStatus('error');
@@ -199,6 +199,10 @@ export default function ContactPage() {
             <div>
               <label htmlFor="contact-company" className="block text-sm font-semibold text-learn2-text mb-2">Company</label>
               <input type="text" id="contact-company" name="company" value={formData.company} onChange={(e) => setFormData(prev => ({ ...prev, company: e.target.value }))} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-learn2-orange" />
+            </div>
+            <div>
+              <label htmlFor="contact-message" className="block text-sm font-semibold text-learn2-text mb-2">What could we help with?</label>
+              <textarea id="contact-message" name="message" rows={4} value={formData.message} onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))} placeholder="Tell us what you are trying to change and roughly when." className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-learn2-orange" />
             </div>
             <button type="submit" disabled={status === 'sending'} className="w-full btn-primary disabled:opacity-50">
               {status === 'sending' ? 'Sending...' : 'Send My Details'}

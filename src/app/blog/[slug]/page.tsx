@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { SITE_URL } from "@/lib/site-config";
+import { SITE_URL, canonicalFor } from "@/lib/site-config";
 import {
   blogPosts,
   getPostBySlug,
@@ -32,6 +32,7 @@ export async function generateMetadata({
       title: post.ogTitle,
       description: post.metaDescription,
       type: "article",
+      url: canonicalFor(`/blog/${post.slug}`),
       publishedTime: post.date,
       authors: ["Doug Bolger"],
       tags: [post.hub, ...post.keywords],
@@ -42,7 +43,7 @@ export async function generateMetadata({
       description: post.metaDescription,
     },
     alternates: {
-      canonical: `${SITE_URL}/blog/${post.slug}`,
+      canonical: canonicalFor(`/blog/${post.slug}`),
     },
   };
 }

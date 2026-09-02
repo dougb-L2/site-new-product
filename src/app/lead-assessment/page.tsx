@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
 import LeadAssessment from '@/components/LeadAssessment';
 import { canonicalFor } from "@/lib/site-config";
+import { ASSESSMENT_CONFIG } from "@/lib/assessment-config";
 
 export const metadata: Metadata = {
+  // Tied to the same flag the sitemap reads: a disabled assessment is left out
+  // of the sitemap AND noindexed, so it is never indexable-but-orphaned.
+  robots: ASSESSMENT_CONFIG.lead.enabled ? undefined : { index: false, follow: true },
   alternates: { canonical: canonicalFor("/lead-assessment") },
   title: 'Leadership Style Assessment — What Type of Leader Am I? | Learn2',
   description:

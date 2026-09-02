@@ -5,6 +5,7 @@ import {
   TEAM_MIRROR,
   type Color,
 } from "@/lib/lead-assessment-data";
+import { SITE_NAME } from "@/lib/site-config";
 
 export const runtime = "nodejs";
 
@@ -12,7 +13,6 @@ const PB_URL = process.env.POCKETBASE_URL || "http://127.0.0.1:8090";
 const PB_EMAIL = process.env.POCKETBASE_EMAIL || "";
 const PB_PASSWORD = process.env.POCKETBASE_PASSWORD || "";
 
-const SITE_NAME = "Naturally by Learn2";
 // Verified SendGrid senders only — learn2@ and assessment@learn2.com.
 const EMAIL_FROM = `${SITE_NAME} <assessment@learn2.com>`;
 const EMAIL_BCC = "sales@Learn2.com";

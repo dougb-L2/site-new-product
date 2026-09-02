@@ -9,7 +9,9 @@ import RouteChangeTracker from '@/components/RouteChangeTracker';
 import { SITE_URL, SITE_NAME } from '@/lib/site-config';
 import './globals.css';
 
-const ChatWidget = dynamic(() => import('@/components/ChatWidget'));
+// Lazy wrapper: renders a lightweight launcher and only pulls the chat bundle
+// on click. Matches the four live Learn2 sites.
+const ChatWidget = dynamic(() => import('@/components/ChatWidgetLazy'));
 
 const inter = Inter({
   subsets: ['latin'],
