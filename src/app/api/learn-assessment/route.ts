@@ -203,7 +203,15 @@ async function sendResultsEmail(payload: {
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
-  const html = buildEmailHtml(payload);
+  const html = buildEmailHtml({
+    name: payload.name,
+    primary: payload.primaryApproach,
+    secondary: payload.secondaryApproach,
+    blindSpot: payload.blindSpot,
+    combinationTitle: payload.combinationTitle,
+    adaptabilityScore: payload.adaptabilityScore,
+    rankings: payload.rankings,
+  });
   const primaryName = APPROACHES[payload.primaryApproach].name;
 
   const { error } = await resend.emails.send({
