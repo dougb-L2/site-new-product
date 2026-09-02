@@ -1,6 +1,3 @@
-User-Agent: *
-Allow: /
-
 # Learn2 Product Site Information
 
 ## Product Overview

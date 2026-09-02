@@ -20,10 +20,14 @@ export const metadata = {
 
 // BlogGrid shows a post count on each filter button. Derive it from the posts
 // so the numbers stay right as a new site fills in its own content.
-const hubsWithCounts = hubs.map((hub) => ({
-  ...hub,
-  count: blogPosts.filter((post) => post.hub === hub.name).length,
-}));
+// Hubs with no posts are dropped: an empty filter button just leads to a blank
+// grid, and a new site starts with most hubs empty.
+const hubsWithCounts = hubs
+  .map((hub) => ({
+    ...hub,
+    count: blogPosts.filter((post) => post.hub === hub.name).length,
+  }))
+  .filter((hub) => hub.count > 0);
 
 export default function BlogPage() {
   return (

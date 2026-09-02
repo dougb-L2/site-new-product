@@ -124,6 +124,36 @@ for (const post of posts) {
   }
 }
 
+// ── llms.txt: unfilled template placeholders must not ship ───────────────────
+// public/llms.txt is served publicly. The template ships it with [Product Name]
+// style placeholders on purpose. That is fine while the site is still the
+// unconfigured template, and a real defect once someone points a domain at it —
+// so this warns for the template and fails the build for a configured site.
+{
+  const llmsPath = join(siteRoot, "public/llms.txt");
+  if (existsSync(llmsPath)) {
+    const llms = readFileSync(llmsPath, "utf8");
+    const placeholders = [...llms.matchAll(/\[[^\]\n]{3,60}\]/g)].map((m) => m[0]);
+    const robotsSyntax = /^\s*(User-Agent|Allow|Disallow)\s*:/im.test(llms);
+
+    const configPath = join(siteRoot, "src/lib/site-config.ts");
+    const stillTemplate =
+      existsSync(configPath) && /your-domain\.com/.test(readFileSync(configPath, "utf8"));
+
+    if (robotsSyntax) {
+      errors.push(
+        "public/llms.txt contains robots.txt directives (User-Agent/Allow/Disallow). Those belong in robots.txt and mean nothing here — remove them.",
+      );
+    }
+    if (placeholders.length > 0) {
+      const list = [...new Set(placeholders)].slice(0, 5).join(" ");
+      const msg = `public/llms.txt still has ${placeholders.length} unfilled placeholder(s): ${list} — it is served publicly at /llms.txt.`;
+      if (stillTemplate) warnings.push(`${msg} (soft while SITE_URL is still your-domain.com)`);
+      else errors.push(msg);
+    }
+  }
+}
+
 // ── Report ───────────────────────────────────────────────────────────────────
 const site = relative(repoRoot, siteRoot);
 if (warnings.length > 0) {

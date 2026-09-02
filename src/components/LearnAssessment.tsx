@@ -145,7 +145,7 @@ export default function LearnAssessment() {
                 Why this matters
               </p>
               <p className="text-learn2-text leading-relaxed">
-                School teaches mainly one way. So we deliver information one
+                School works mainly one way. So we deliver information one
                 way. When you know how you learn, you learn faster and enjoy it
                 more.
               </p>
@@ -477,7 +477,7 @@ export default function LearnAssessment() {
 
             <div>
               <p className="font-medium text-learn2-text mb-4 text-lg">
-                Do you regularly teach, coach, or develop others?
+                Do you regularly guide, coach, or develop others?
               </p>
               <div className="flex gap-4">
                 {["yes", "sometimes", "no"].map((val) => (

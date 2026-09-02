@@ -124,7 +124,7 @@ export default function CertificationPage() {
                 </li>
                 <li className="flex gap-3">
                   <span className="text-learn2-orange font-bold">✓</span>
-                  <span>Facilitation training and coaching</span>
+                  <span>Facilitation practice and coaching</span>
                 </li>
                 <li className="flex gap-3">
                   <span className="text-learn2-orange font-bold">✓</span>

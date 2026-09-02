@@ -9,9 +9,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid URL provided' }, { status: 400 });
     }
 
-    const indexNowKey = process.env.INDEXNOW_API_KEY;
+    const indexNowKey = process.env.INDEXNOW_KEY;
     if (!indexNowKey) {
-      console.error('INDEXNOW_API_KEY not configured');
+      console.error('INDEXNOW_KEY not configured');
       return NextResponse.json({ error: 'IndexNow API key not configured' }, { status: 500 });
     }
 
