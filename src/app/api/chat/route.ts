@@ -61,14 +61,9 @@ const chatTools = {
         .describe("Brief context of what was discussed to personalize the suggestion"),
     }),
     execute: async ({ booking_type, context }) => {
-      const links = CHAT_CONFIG.bookingLinks;
-      const labels = {
-        discovery: "Book a Free Discovery Call",
-        walkthrough: "Watch the Solution Walkthrough",
-      };
       return {
-        link: links[booking_type],
-        label: labels[booking_type],
+        link: CHAT_CONFIG.bookingLinks[booking_type],
+        label: CHAT_CONFIG.bookingLabels[booking_type],
         context,
       };
     },
