@@ -30,6 +30,14 @@ export const CHAT_CONFIG = {
     walkthrough: "https://bookme.name/DougBolger/solution-walkthru",
   },
 
+  /** Button text for each booking link. Used by the suggest_booking tool and,
+   *  when that tool fails, by ChatWidget's fallback — one source, so the two
+   *  can never drift. */
+  bookingLabels: {
+    discovery: "Book a Free Discovery Call",
+    walkthrough: "Watch the Solution Walkthrough",
+  },
+
   /** Fallback contact when chat is unavailable */
   fallbackEmail: "doug@Learn2.com",
 };

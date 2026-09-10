@@ -94,15 +94,27 @@ export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: bool
         );
       }
 
-      // Booking button. The part type is `tool-<toolName>` and the output only
-      // exists once the tool has run — anything earlier has no link to render.
-      // capture_lead is a background operation, so it deliberately renders
-      // nothing and falls through.
-      if (part.type === "tool-suggest_booking" && part.state === "output-available") {
+      // Booking button. Either the tool returned a link, or it failed — in both
+      // cases the visitor gets something clickable, because this is the chat's
+      // only conversion action. Falling through to `return null` on a failure
+      // would leave them with no way to book and no explanation. In-flight
+      // states render nothing, and capture_lead is a background operation that
+      // deliberately renders nothing either.
+      if (part.type === "tool-suggest_booking") {
+        const booking =
+          part.state === "output-available"
+            ? { href: part.output.link, label: part.output.label }
+            : part.state === "output-error"
+              ? {
+                  href: CHAT_CONFIG.bookingLinks.discovery,
+                  label: CHAT_CONFIG.bookingLabels.discovery,
+                }
+              : null;
+        if (!booking) return null;
         return (
           <a
             key={i}
-            href={part.output.link}
+            href={booking.href}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -121,7 +133,7 @@ export default function ChatWidget({ defaultOpen = false }: { defaultOpen?: bool
             onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.85")}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           >
-            {part.output.label} →
+            {booking.label} →
           </a>
         );
       }
